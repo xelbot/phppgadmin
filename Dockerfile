@@ -6,12 +6,13 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y apt-utils
 RUN apt-get install -y \
-    wget libpq-dev
+    libpq-dev
 
 RUN docker-php-ext-install pgsql opcache
 
-RUN wget https://github.com/phppgadmin/phppgadmin/archive/master.tar.gz
-RUN tar -zxvf master.tar.gz -C /var/www/html
+RUN curl -sSL -o /var/www/master.tar.gz https://github.com/phppgadmin/phppgadmin/archive/master.tar.gz
+RUN tar -zxvf /var/www/master.tar.gz -C /var/www/html
+RUN rm /var/www/master.tar.gz
 
 RUN echo "alias ll='ls -ahl'" >> /root/.bashrc
 RUN sed -i "s/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/phppgadmin-master/" \
